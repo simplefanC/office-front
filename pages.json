@@ -1,0 +1,287 @@
+{
+	"pages": [
+		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/launch_page/launch_page",
+			"style": {
+				"navigationBarTitleText": "欢迎使用EMOS系统",
+				"enablePullDownRefresh": false
+			}
+
+		},
+		{
+			"path": "pages/schedule/schedule",
+			"style": {
+				"navigationBarTitleText": "日程安排",
+				"enablePullDownRefresh": false
+			}
+
+		},
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录",
+				//开启下拉刷新
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "platforms/app-plus/liveroom/liveroom",
+			"style": {
+				"navigationBarTitleText": "视频会议",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"titleNView": {
+						"autoBackButton": false,
+						"buttons": [{
+							"text": "exit",
+							"fontSize": "16",
+							"float": "right",
+							"color": "#FFFFFF"
+						}]
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/login/register",
+			"style": {
+				"navigationBarTitleText": "注册",
+				//开启下拉刷新
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/login/forget",
+			"style": {
+				"navigationBarTitleText": "密码重置",
+				//开启下拉刷新
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/login/binding",
+			"style": {
+				"navigationBarTitleText": "账号绑定",
+				//开启下拉刷新
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "首页"
+			}
+		},
+
+		{
+			"path": "pages/register/register",
+			"style": {
+				"navigationBarTitleText": "新用户注册",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/meeting_list/meeting_list",
+			"style": {
+				"navigationBarTitleText": "会议列表",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/document/document",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/contacts/contacts",
+			"style": {
+				"navigationBarTitleText": "通讯录",
+				"app-plus": {
+					"bounce": "none",
+					"scrollIndicator": "none"
+				}
+			}
+		},
+		{
+			"path": "pages/mine/mine",
+			"style": {
+				"navigationBarTitleText": "个人中心",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/checkin/checkin",
+			"style": {
+				"navigationBarTitleText": "签到",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/checkin_result/checkin_result",
+			"style": {
+				"navigationBarTitleText": "签到结果",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/my_checkin/my_checkin",
+			"style": {
+				"navigationBarTitleText": "我的考勤",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/message_list/message_list",
+			"style": {
+				"navigationBarTitleText": "消息列表",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/message/message",
+			"style": {
+				"navigationBarTitleText": "消息详情",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/meeting/meeting",
+			"style": {
+				"navigationBarTitleText": "会议详情",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/members/members",
+			"style": {
+				"navigationBarTitleText": "选择成员",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/approval_list/approval_list",
+			"style": {
+				"navigationBarTitleText": "在线审批",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/approval/approval",
+			"style": {
+				"navigationBarTitleText": "审批",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/role/role",
+			"style": {
+				"navigationBarTitleText": "角色详情",
+				"enablePullDownRefresh": false
+			}
+
+		},
+		{
+			"path": "pages/role_list/role_list",
+			"style": {
+				"navigationBarTitleText": "角色列表",
+				"enablePullDownRefresh": false
+			}
+
+		},
+		// {
+		// 	"path": "platforms/app-plus/liveroom/liveroom",
+		// 	"style": {
+		// 		"navigationBarTitleText": "",
+		// 		"enablePullDownRefresh": false
+		// 	}
+
+		// }, 
+		{
+			"path": "pages/employee_list/employee_list",
+			"style": {
+				"navigationBarTitleText": "员工列表",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/dept_list/dept_list",
+			"style": {
+				"navigationBarTitleText": "部门列表",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/employee/employee",
+			"style": {
+				"navigationBarTitleText": "员工详情",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/news/detail",
+			"style": {
+				"navigationBarTitleText": "资讯详情",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/news/index",
+			"style": {
+				"navigationBarTitleText": "新闻资讯",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/system_config/system_config",
+			"style": {
+				"navigationBarTitleText": "系统配置",
+				"enablePullDownRefresh": false
+			}
+
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "EMOS系统",
+		"navigationBarBackgroundColor": "#3474FF",
+		"backgroundColor": "#EEEEF4"
+	},
+	// 实现Tab导航
+	"tabBar": {
+		"color": "#666",
+		"selectedColor": "#3474FF",
+		"list": [{
+				"text": "首页",
+				"pagePath": "pages/index/index",
+				"iconPath": "static/bar-1.png",
+				"selectedIconPath": "static/bar-1-active.png"
+			},
+			{
+				"text": "会议",
+				"pagePath": "pages/meeting_list/meeting_list",
+				"iconPath": "static/bar-2.png",
+				"selectedIconPath": "static/bar-2-active.png"
+			},
+			{
+				"text": "资讯",
+				"pagePath": "pages/news/index",
+				"iconPath": "static/bar-3.png",
+				"selectedIconPath": "static/bar-3-active.png"
+			},
+			{
+				"text": "通讯录",
+				"pagePath": "pages/contacts/contacts",
+				"iconPath": "static/bar-4.png",
+				"selectedIconPath": "static/bar-4-active.png"
+			},
+			{
+				"text": "我的",
+				"pagePath": "pages/mine/mine",
+				"iconPath": "static/bar-5.png",
+				"selectedIconPath": "static/bar-5-active.png"
+			}
+		]
+	}
+}

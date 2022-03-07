@@ -1,0 +1,409 @@
+<template>
+	<view>
+		<scroll-view class="page" :style="[windowHeight ? { height: windowHeight + 'px' } : '']" scroll-y="true">
+			<!-- <text class="page-title">多人房间: {{ roomId }}</text> -->
+			<view class="liveroom">
+				<view class="liveroom-cel liveroom-pusher">
+					<!-- 是否开启本地预览	 enableLocalPreview-->
+					<TX-PlayView
+						class="liveroom-trtc"
+						ref="maxTxPlayView"
+						:appId="appId"
+						:appKey="appKey"
+						:roomId="roomId"
+						:userId="userName"
+						mirror="true"
+						:enableLocalPreview="localPreview"
+						enableLocalAudio="true"
+						@statechange="onPush"
+					></TX-PlayView>
+	
+					<text class="liveroom-cel-name">{{ userName }} (我)</text>
+				</view>
+				<!-- <view class="liveroom-cel liveroom-player">
+					<TX-PlayView
+						class="liveroom-trtc"
+						ref="maxTxPlayView"
+						:appId="appId"
+						:appKey="appKey"
+						:roomId="roomId"
+						:userId="userName"
+						mirror="true"
+						enableLocalPreview="true"
+						enableLocalAudio="true"
+						@statechange="onPush"
+					></TX-PlayView>
+					
+					<text class="liveroom-cel-name">111</text>
+				</view>
+				<view class="liveroom-cel liveroom-player">
+					<TX-PlayView
+						class="liveroom-trtc"
+						ref="maxTxPlayView"
+						:appId="appId"
+						:appKey="appKey"
+						:roomId="roomId"
+						:userId="userName"
+						mirror="true"
+						enableLocalPreview="true"
+						enableLocalAudio="true"
+						@statechange="onPush"
+					></TX-PlayView>
+					
+					<text class="liveroom-cel-name">222</text>
+				</view>
+				<view class="liveroom-cel liveroom-player">
+					<TX-PlayView
+						class="liveroom-trtc"
+						ref="maxTxPlayView"
+						:appId="appId"
+						:appKey="appKey"
+						:roomId="roomId"
+						:userId="userName"
+						mirror="true"
+						enableLocalPreview="true"
+						enableLocalAudio="true"
+						@statechange="onPush"
+					></TX-PlayView>
+					
+					<text class="liveroom-cel-name">333</text>
+				</view>
+				<view class="liveroom-cel liveroom-player">
+					<TX-PlayView
+						class="liveroom-trtc"
+						ref="maxTxPlayView"
+						:appId="appId"
+						:appKey="appKey"
+						:roomId="roomId"
+						:userId="userName"
+						mirror="true"
+						enableLocalPreview="true"
+						enableLocalAudio="true"
+						@statechange="onPush"
+					></TX-PlayView>
+					
+					<text class="liveroom-cel-name">444</text>
+				</view>
+				<view class="liveroom-cel liveroom-player">
+					<TX-PlayView
+						class="liveroom-trtc"
+						ref="maxTxPlayView"
+						:appId="appId"
+						:appKey="appKey"
+						:roomId="roomId"
+						:userId="userName"
+						mirror="true"
+						enableLocalPreview="true"
+						enableLocalAudio="true"
+						@statechange="onPush"
+					></TX-PlayView>
+					
+					<text class="liveroom-cel-name">555</text>
+				</view> -->
+				<view class="liveroom-cel liveroom-player" v-for="(item, index) in players" :key="index">
+					<TX-PlayView
+						class="liveroom-trtc"
+						:ref="'remoteUser' + item.userId"
+						mirror="true"
+						:remoteUserId="item.userId"
+						:remoteSubStreamUserId="item.remoteSubStreamUserId"
+						remoteSubStreamModel="0"
+					></TX-PlayView>
+	
+					<text class="liveroom-cel-name">{{ item.userId }}</text>
+				</view>
+			</view>
+		</scroll-view>
+		<view class="foot">
+			<view class="circleBoxAll">
+				<view class="circleBox" @click="muteLocalVideo()">
+					<image v-if="!localVideo" src="../../../static/Video.png" class="circleIco"></image>
+					<image v-if="localVideo" src="../../../static/Video-Off.png" class="circleIco"></image>
+				</view>
+				<view class="circleBox" @click="muteLocalAudio()()">
+					<image v-if="!localAudio" src="../../../static/audio.png" class="circleIco"></image>
+					<image v-if="localAudio" src="../../../static/audio-static.png" class="circleIco"></image>
+				</view>
+				<view class="circleBox" @click="switchCamera()()">
+					<image src="../../../static/camera.png" class="circleIco"></image>
+				</view>
+				<view class="circleBox" @click="switchAudioRoute()">
+					<image v-if="audioRoute" src="../../../static/earpiece.png" class="circleIco"></image>
+					<image v-if="!audioRoute" src="../../../static/speaker.png" class="circleIco"></image>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+import { appId, appKey } from '@/common/app.js';
+const trtcCloud = uni.requireNativePlugin('TX-TRTCCloud');
+export default {
+	data() {
+		return {
+			windowHeight: 667,
+			roomId: 868,
+			userName: '',
+			players: [],
+			appId: appId,
+			appKey: appKey,
+			localVideo: false,
+			localAudio: false,
+			audioRoute: 0,
+			localPreview: true
+		};
+	},
+
+	onLoad(options) {
+		this.userName = options.userName
+		// this.windowHeight = 667;
+		this.resizeWinHeight();
+		this.roomId = options.roomId
+	},
+
+	onReady() {
+		this.join();
+	},
+
+	onResize() {
+		this.resizeWinHeight();
+	},
+
+	onNavigationBarButtonTap() {
+		uni.navigateBack({
+			delta: 1,
+			animationType: 'pop-out',
+			animationDuration: 200
+		});
+	},
+
+	onBackPress() {
+		this.$refs.maxTxPlayView.leaveRoom();
+	},
+	methods: {
+		// 切换摄像头
+		switchCamera(){
+			trtcCloud.switchCamera();
+		},
+		// 整型 0 扬声器 1听筒
+		switchAudioRoute(){
+			this.audioRoute = this.audioRoute == 1 ? 0 : 1
+			trtcCloud.setAudioRoute(this.audioRoute);
+		},
+		onBackPress() {
+			// 离开房间
+			trtcCloud.exitRoom();
+			// 销毁 TRTCCloud 单例
+			trtcCloud.destroySharedInstance();
+		},
+		// 参数 Bool值true or false	是否屏蔽自己的视频画面
+		muteLocalVideo(){
+			this.localVideo = !this.localVideo
+			trtcCloud.muteLocalVideo(this.localVideo);
+			this.localPreview = !this.localPreview
+		},
+		// Bool值 true or false	静音本地的音频
+		muteLocalAudio(){
+			this.localAudio = !this.localAudio
+			trtcCloud.muteLocalAudio(this.localAudio);
+		},
+		join() {
+			trtcCloud.setAudioRoute(this.audioRoute);
+			trtcCloud.muteLocalVideo(this.localVideo);
+			trtcCloud.muteLocalAudio(this.localAudio);
+			//开启声音大小的回调，如果不需要可以不写
+			// trtcCloud.enableAudioVolumeEvaluation(5000);
+			// //使用TXPlayView的enterRoom方法不用指定statechange的回调，与TXPlayView的joinRoom二选其一
+			// this.$refs.maxTxPlayView.enterRoom({"roomId":869},result=>{
+			//  console.log(result);
+			//  switch (result.type) {
+			//    case 'onFirstVideoFrame':
+			//      console.log('onFirstVideoFrame');
+			//      break;
+
+			//    case 'onUserVideoAvailable':
+			//      break;
+
+			//    case 'onUserEnter':
+			//    console.log('onUserEnterxxxxx');
+			//      if (result.userId) this.addPlayer(result.userId)
+			//      break;
+			//    case 'onUserSubStreamAvailable':
+			//      if (result.userId) this.addSubStreamPlayer(result.userId);
+
+			//    case 'onUserExit':
+			//      if (result.userId) this.removePlayer(result.userId)
+			//      break;
+			//  }
+			// })
+
+			//加入房间 ，与trtcCloud的enterRoom方法一样的效果，二者选一个就可以了，如果用enterRoom需要填写参数，参考文档
+			this.$refs.maxTxPlayView.joinRoom();
+		},
+
+		onPush(e) {
+			let result = e.detail;
+			console.log(result);
+			switch (result.type) {
+				case 'onFirstVideoFrame':
+					console.log('onFirstVideoFrame');
+					break;
+
+				case 'onUserVideoAvailable':
+					break;
+
+				case 'onUserEnter':
+					if (result.userId) this.addPlayer(result.userId);
+					break;
+				case 'onUserSubStreamAvailable':
+					if (result.userId) this.addSubStreamPlayer(result.userId);
+
+				case 'onUserExit':
+					if (result.userId) this.removePlayer(result.userId);
+					break;
+			}
+		},
+
+		addPlayer(userId) {
+			this.players.push({
+				userId: userId
+			});
+		},
+
+		addSubStreamPlayer(userId) {
+			this.players.push({
+				remoteSubStreamUserId: userId
+			});
+		},
+
+		removePlayer(userId) {
+			for (let i = 0; i < this.players.length; i++) {
+				let d = this.players[i];
+				if (d.userId === userId) {
+					this.players.splice(i, 1);
+					break;
+				}
+			}
+		},
+
+		resizeWinHeight() {
+			uni.getSystemInfo({
+				success: res => {
+					this.windowHeight = res.windowHeight;
+				}
+			});
+		}
+	}
+};
+</script>
+
+<style lang="scss">
+.page {
+	height: 100%;
+	background-color: #2b2f32;
+}
+.page-title {
+	width: 750rpx;
+	height: 80rpx;
+	line-height: 80rpx;
+	color: #fff;
+	font-size: 28rpx;
+	text-align: center;
+}
+
+.liveroom {
+	flex-direction: row;
+	flex-wrap: wrap;
+
+	width: 750rpx;
+}
+$cel-width: 0.5 * 750rpx;
+.liveroom-cel {
+	width: $cel-width;
+	height: 1.382 * $cel-width + 40rpx;
+	padding: 20rpx;
+}
+.liveroom-trtc {
+	width: $cel-width - 40rpx;
+	height: 1.382 * $cel-width - 40rpx;
+	background-color: #444;
+}
+
+.liveroom-cel-name {
+	width: $cel-width - 40rpx;
+	height: 40rpx;
+	line-height: 40rpx;
+	text-align: center;
+	color: #999;
+	font-size: 24rpx;
+}
+
+.maxTxPlayView{
+	width:750upx;
+	background-color:#111111;
+	position: fixed;
+	top: 0;
+	right: 0;
+}
+.minTxPlayView{
+	width:300upx;
+	height:400upx;
+	position: fixed;
+	background-color:#000000;
+	right:20upx;
+	top:20upx;
+	/* border-radius: 10px; */
+	/* border-style: solid;
+	border-width: 1px; 
+	border-color:#fefefe;
+	 */
+}
+.foot{
+	// background-color: #222325;
+	width: 710upx;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	margin: 20upx;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+	flex-direction: column;
+}
+.circleBoxAll{
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+.circleBox{
+	width: 150upx;
+	padding:30upx 0;
+	margin:10upx;
+	align-items: center;
+	flex-direction: column;
+}
+
+.circleIco{
+	// font-size:30upx;
+	// width:100upx;
+	// height:100upx;
+	// line-height:100upx;
+	// border-radius: 500px;
+	// border-style: solid;
+	// border-width: 1px; 
+	// border-color:#FFFFFF;
+	// text-align: center;
+	// font-family:iconfont;
+	// color: #FFFFFF;
+	// font-size:50upx;
+	width:100upx;
+	height:100upx;
+	border-radius:500px;
+	padding: 7px;
+	background-color: #c5433a;
+	// border-color: #c5433a;
+	// border-style: solid;
+	// border-width: 1px;
+}
+</style>
